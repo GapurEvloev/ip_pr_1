@@ -1,6 +1,13 @@
 const forms = () => {
   const allForms = document.querySelectorAll("form");
   const allInputs = document.querySelectorAll("input");
+  const phoneInputs = document.querySelectorAll("input[name='user_phone']");
+
+  phoneInputs.forEach(input => {
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/\D/, "");
+    });
+  });
 
   const messages = {
     loading: "Loading ...",
@@ -19,7 +26,7 @@ const forms = () => {
   };
 
   const clearInputs = () => {
-    allInputs.forEach(input => {
+    allInputs.forEach((input) => {
       input.value = "";
     });
   };
@@ -35,11 +42,11 @@ const forms = () => {
       const formData = new FormData(form);
 
       postData("assets/server.php", formData)
-        .then(res => {
+        .then((res) => {
           console.log(res);
           statusMessage.textContent = messages.succsess;
         })
-        .catch(() => statusMessage.textContent = messages.failure)
+        .catch(() => (statusMessage.textContent = messages.failure))
         .finally(() => {
           clearInputs();
           setTimeout(() => {
