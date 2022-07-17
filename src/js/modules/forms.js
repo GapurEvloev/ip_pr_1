@@ -1,13 +1,11 @@
-const forms = () => {
+import checkNumInputs from "./checkNumInputs";
+import { hideModal } from "./modals";
+
+const forms = (state) => {
   const allForms = document.querySelectorAll("form");
   const allInputs = document.querySelectorAll("input");
-  const phoneInputs = document.querySelectorAll("input[name='user_phone']");
 
-  phoneInputs.forEach(input => {
-    input.addEventListener('input', () => {
-      input.value = input.value.replace(/\D/, "");
-    });
-  });
+  checkNumInputs("input[name='user_phone']");
 
   const messages = {
     loading: "Loading ...",
@@ -40,10 +38,20 @@ const forms = () => {
       form.appendChild(statusMessage);
 
       const formData = new FormData(form);
+      if (form.getAttribute("data-form") === "calc_end") {
+        for (const key in state) {
+          formData.append(key, state[key]);
+        }
+      }
 
       postData("assets/server.php", formData)
         .then((res) => {
           console.log(res);
+          document.querySelectorAll("[data-modal]").forEach((item) => {
+            setTimeout(() => {
+              hideModal(item);
+            }, 3000);
+          });
           statusMessage.textContent = messages.succsess;
         })
         .catch(() => (statusMessage.textContent = messages.failure))
