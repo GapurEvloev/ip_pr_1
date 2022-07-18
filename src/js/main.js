@@ -4,6 +4,7 @@ import tabs from "./modules/tabs";
 import forms from "./modules/forms";
 import changeModalState from "./modules/changeModalState";
 import timer from "./modules/timer";
+import imagesPopup from "./modules/imagesPopup";
 
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
@@ -18,4 +19,5 @@ document.addEventListener("DOMContentLoaded", () => {
   tabs(".balcon_icons", ".balcon_icons_img", ".big_img > img", "do_image_more");
   forms(modalState);
   timer("#timer", "2022-08-13");
+  imagesPopup();
 });
