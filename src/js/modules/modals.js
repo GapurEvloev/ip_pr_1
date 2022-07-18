@@ -4,16 +4,33 @@ export function hideModal(modal) {
   modal.classList.add("hide");
 }
 
+export function calcScroll() {
+  let div = document.createElement("div");
+
+  div.style.width = "50px";
+  div.style.height = "50px";
+  div.style.overflowY = "scroll";
+  div.style.visibility = "hidden";
+
+  document.body.appendChild(div);
+  let scrollWidth = div.offsetWidth - div.clientWidth;
+  div.remove();
+
+  return scrollWidth;
+}
+
 const modals = () => {
   function bindModal(triggerSelector, modalSelector, closeClickOverlay = true) {
     let triggers = document.querySelectorAll(triggerSelector),
       modal = document.querySelector(modalSelector),
-      allModals = document.querySelectorAll("[data-modal]");
+      allModals = document.querySelectorAll("[data-modal]"),
+      scrollWidth = calcScroll();
 
     function showModal(modal) {
       document.body.classList.add("modal-open");
       modal.classList.add("show");
       modal.classList.remove("hide");
+      document.body.style.marginRight = `${scrollWidth}px`;
     }
 
     triggers.forEach((item) => {
@@ -24,6 +41,7 @@ const modals = () => {
 
         allModals.forEach((item) => {
           hideModal(item);
+          document.body.style.marginRight = `0px`;
         });
 
         showModal(modal);
@@ -33,6 +51,7 @@ const modals = () => {
     modal.addEventListener("click", (e) => {
       if ((e.target === modal && closeClickOverlay) || e.target.classList.contains("popup_close")) {
         hideModal(modal);
+        document.body.style.marginRight = `0px`;
         allModals.forEach((item) => {
           hideModal(item);
         });
